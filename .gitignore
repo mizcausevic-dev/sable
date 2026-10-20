@@ -1,0 +1,16 @@
+node_modules
+agent-tools
+.next
+.data
+.env
+.env.local
+out
+test-results
+playwright-report
+blob-report
+*.tsbuildinfo
+next-env.d.ts
+coverage
+.vercel
+dist
+site/*.png

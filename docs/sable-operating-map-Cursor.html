@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="steel" data-mode="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sable operating map</title>
+<style>
+  :root, [data-theme="steel"][data-mode="dark"] { --bg:#121410; --panel:#22261e; --ink:#f3f1e8; --muted:#a7ab9d; --line:#3a4034; --accent:#e0a04a; --accent-ink:#2a1c08; --good:#8fbf9f; --bad:#e07a6a; }
+  [data-theme="steel"][data-mode="light"] { --bg:#f4f2ec; --panel:#fff; --ink:#1c1e18; --muted:#5d6256; --line:#d5d1c6; --accent:#8a5a12; --accent-ink:#fff; --good:#1f6b45; --bad:#9d2c22; }
+  [data-theme="bento"][data-mode="dark"] { --bg:#161311; --panel:#2c261f; --ink:#f6efe6; --muted:#b5a89a; --line:#4a4036; --accent:#ef8f6a; --accent-ink:#2b120c; --good:#d8c07a; --bad:#ff8f8f; }
+  [data-theme="bento"][data-mode="light"] { --bg:#efe7dc; --panel:#fffaf4; --ink:#2a211b; --muted:#6e6258; --line:#e2d4c4; --accent:#d4653a; --accent-ink:#fff; --good:#2f6d4f; --bad:#a33b32; }
+  [data-theme="cosmic"][data-mode="dark"] { --bg:#070b14; --panel:#152038; --ink:#e7f6ff; --muted:#93a8c7; --line:#243556; --accent:#67f2e4; --accent-ink:#04221f; --good:#8dffa8; --bad:#ff7d9c; }
+  [data-theme="cosmic"][data-mode="light"] { --bg:#eef5fb; --panel:#fff; --ink:#102033; --muted:#4d6278; --line:#d3e0ec; --accent:#0e7490; --accent-ink:#fff; --good:#0f766e; --bad:#be123c; }
+  [data-theme="swiss"][data-mode="dark"] { --bg:#0e0e0e; --panel:#1c1c1c; --ink:#f5f5f5; --muted:#a3a3a3; --line:#2e2e2e; --accent:#ff2a2a; --accent-ink:#fff; --good:#d6d6d6; --bad:#ff2a2a; }
+  [data-theme="swiss"][data-mode="light"] { --bg:#f7f7f5; --panel:#fff; --ink:#111; --muted:#555; --line:#111; --accent:#e10600; --accent-ink:#fff; --good:#111; --bad:#e10600; }
+  [data-theme="aqua"][data-mode="dark"] { --bg:#04242b; --panel:#0c4250; --ink:#e7fbff; --muted:#9ed4df; --line:#1c6c7c; --accent:#7dffa8; --accent-ink:#06301a; --good:#7dffa8; --bad:#ffb4a2; }
+  [data-theme="aqua"][data-mode="light"] { --bg:#e7f7fb; --panel:#fff; --ink:#08303a; --muted:#3d6670; --line:#b7dbe3; --accent:#0b7285; --accent-ink:#fff; --good:#0f766e; --bad:#c2410c; }
+  [data-theme="brutal"][data-mode="dark"] { --bg:#140818; --panel:#2a1233; --ink:#fff4fb; --muted:#e2b6d4; --line:#ff4fd8; --accent:#d6ff3f; --accent-ink:#1a2200; --good:#d6ff3f; --bad:#ff4fd8; }
+  [data-theme="brutal"][data-mode="light"] { --bg:#fff6ea; --panel:#fff; --ink:#1a1020; --muted:#5c4058; --line:#1a1020; --accent:#ff4fd8; --accent-ink:#1a1020; --good:#1f7a3a; --bad:#b00040; }
+  [data-theme="parchment"][data-mode="dark"] { --bg:#1c1610; --panel:#2a2218; --ink:#f3e6d0; --muted:#cbbba0; --line:#5a4a36; --accent:#d7b07a; --accent-ink:#2a1c08; --good:#b7c7a1; --bad:#d9897a; }
+  [data-theme="parchment"][data-mode="light"] { --bg:#f6f0e4; --panel:#fffaf1; --ink:#2c2418; --muted:#6d5e4a; --line:#e2d3b8; --accent:#8a5a2b; --accent-ink:#fff; --good:#3f6b45; --bad:#8d3b32; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 "Space Grotesk", ui-sans-serif, system-ui, sans-serif; }
+  header, main { width: min(1100px, calc(100% - 32px)); margin: 0 auto; }
+  header { padding: 28px 0 8px; display: flex; justify-content: space-between; gap: 16px; align-items: end; flex-wrap: wrap; }
+  h1, h2 { font-weight: 560; letter-spacing: -0.03em; margin: 0 0 8px; }
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.15rem; margin-top: 0; }
+  p { margin: 0 0 10px; }
+  .muted { color: var(--muted); }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: end; }
+  label { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+  select, button { background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; }
+  button { cursor: pointer; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  article, .flow { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { border-bottom: 1px solid var(--line); text-align: left; padding: 6px 4px; vertical-align: top; }
+  .yes { color: var(--good); }
+  .no { color: var(--muted); }
+  .flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .flow span, .flow b { border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+  .flow b { background: var(--accent); color: var(--accent-ink); }
+  code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 12px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <p class="muted">Sable · static map of the running application</p>
+    <h1>One organization. Clients, delivery, revenue.</h1>
+    <p>This page does not execute the product. GitHub Pages can host this file. The application itself needs Node and Postgres.</p>
+  </div>
+  <div class="row">
+    <label>Theme<select id="theme" aria-label="Theme"></select></label>
+    <button id="mode" type="button">Light</button>
+  </div>
+</header>
+<main>
+  <section class="grid">
+    <article><h2>What it is</h2><p>Agency operations software: clients, projects, tasks, time, estimates, proposals, invoices, and payments inside one tenant.</p></article>
+    <article><h2>Who it is for</h2><p>An owner or admin running a studio, managers and contributors doing the work, and a client who should see only assigned accounts.</p></article>
+    <article><h2>Why the boundary holds</h2><p>Every tenant row carries <code>organization_id</code>. Foreign keys refuse cross-organization links. Row-level security is forced. The app never treats a submitted organization id as access.</p></article>
+    <article><h2>How money is stored</h2><p>Integer minor units. A line total is <code>quantity_milli × unit_amount_minor</code>, rounded half away from zero by the database. One currency per organization.</p></article>
+  </section>
+  <section class="flow" aria-label="Revenue path">
+    <span>Estimate or proposal</span><b>draft</b><span>sent</span><span>accepted, declined, withdrawn, or expired</span>
+    <span>Invoice</span><b>draft</b><span>issued</span><span>partial or paid, from payments only</span><span>void</span>
+  </section>
+  <p class="muted">Manual payments and provider-confirmed payments are separate ledger sources. With no <code>PAYMENT_PROVIDER</code>, the billing screen is a mock adapter and does not charge a card.</p>
+  <h2>Permission matrix</h2>
+  <div style="overflow:auto">
+    <table id="matrix">
+      <thead><tr><th>Permission</th><th>Owner</th><th>Admin</th><th>Manager</th><th>Contributor</th><th>Client</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="muted">Admins hold every permission in this table. Granting or removing the owner role is refused in <code>private.set_member_role</code>. The last owner cannot be demoted or removed.</p>
+  <h2>Report identity</h2>
+  <p>Recognized revenue is the sum of issued, partial, and paid invoice totals whose issued date is in range. Outstanding is the current balance of the issued and partial invoices in that set. Collected sums payments received in range. Gross profit subtracts delivery cost from time in the same range. An empty range does not report a 0% margin.</p>
+  <h2>Seed used by tests</h2>
+  <p>Northline Studio invoice INV-1042 is 630,000 minor units (USD 6,300.00): discovery 450,000 plus design 180,000. The seed records a manual payment of 200,000, so the balance is 430,000 until another payment is recorded. Harbor &amp; Co has its own paid invoice. Ava Quinn can read Bright Parcel and the Parcel tracking project, including the portal note, and cannot read the internal rate note or cost rates.</p>
+</main>
+<script>
+const themes = ["steel", "bento", "cosmic", "swiss", "aqua", "brutal", "parchment"];
+const matrix = {
+  "org.settings": ["owner", "admin"],
+  "org.billing": ["owner", "admin"],
+  "org.members": ["owner", "admin"],
+  "org.invite": ["owner", "admin", "manager"],
+  "org.audit": ["owner", "admin"],
+  "clients.read": ["owner", "admin", "manager", "contributor", "client"],
+  "clients.write": ["owner", "admin", "manager", "contributor"],
+  "projects.read": ["owner", "admin", "manager", "contributor", "client"],
+  "projects.write": ["owner", "admin", "manager", "contributor"],
+  "tasks.write": ["owner", "admin", "manager", "contributor"],
+  "tasks.assign": ["owner", "admin", "manager"],
+  "templates.manage": ["owner", "admin", "manager"],
+  "finance.read": ["owner", "admin", "manager"],
+  "finance.write": ["owner", "admin", "manager"],
+  "finance.internal": ["owner", "admin", "manager"],
+  "time.write": ["owner", "admin", "manager", "contributor"],
+  "reports.operational": ["owner", "admin", "manager", "contributor"],
+  "reports.financial": ["owner", "admin", "manager"],
+  "reports.export": ["owner", "admin", "manager"],
+  "files.write": ["owner", "admin", "manager", "contributor"]
+};
+const roles = ["owner", "admin", "manager", "contributor", "client"];
+const body = document.querySelector("#matrix tbody");
+for (const [permission, allowed] of Object.entries(matrix)) {
+  const row = document.createElement("tr");
+  row.append(cell(permission));
+  for (const role of roles) {
+    const mark = cell(allowed.includes(role) ? "yes" : "");
+    mark.className = allowed.includes(role) ? "yes" : "no";
+    row.append(mark);
+  }
+  body.append(row);
+}
+function cell(text) {
+  const td = document.createElement("td");
+  td.textContent = text;
+  return td;
+}
+const themeSelect = document.querySelector("#theme");
+const modeButton = document.querySelector("#mode");
+const root = document.documentElement;
+for (const theme of themes) {
+  const option = document.createElement("option");
+  option.value = theme;
+  option.textContent = theme;
+  themeSelect.append(option);
+}
+function paint(theme, mode) {
+  root.dataset.theme = theme;
+  root.dataset.mode = mode;
+  themeSelect.value = theme;
+  modeButton.textContent = mode === "dark" ? "Light" : "Dark";
+  localStorage.setItem("sable-map-theme", theme);
+  localStorage.setItem("sable-map-mode", mode);
+}
+themeSelect.addEventListener("change", () => paint(themeSelect.value, root.dataset.mode || "dark"));
+modeButton.addEventListener("click", () => paint(root.dataset.theme || "steel", root.dataset.mode === "dark" ? "light" : "dark"));
+paint(localStorage.getItem("sable-map-theme") || "steel", localStorage.getItem("sable-map-mode") || "dark");
+</script>
+</body>
+</html>
